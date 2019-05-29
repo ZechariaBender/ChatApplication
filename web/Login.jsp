@@ -17,6 +17,9 @@
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="name" name="name"/>
+                    <% if(request.getAttribute("error").equals("true")) { %>
+                    <div class="alert alert-danger" role="alert">Missing name!</div>
+                    <% } %>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block" style="background: blue; color: white">Enter</button>
