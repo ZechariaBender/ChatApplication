@@ -1,3 +1,6 @@
+/**
+*
+*/
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -29,6 +32,9 @@
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="message" name="message" autofocus="autofocus"/>
+                    <% if(request.getAttribute("error").equals("true")) { %>
+                    <div class="alert alert-danger" role="alert">No message!</div>
+                    <% } %>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" style="background: blue; color: white">Send</button>
@@ -37,7 +43,7 @@
         </div>
         <div>
             <%
-                response.setIntHeader("Refresh", 5);
+                response.setIntHeader("Refresh", 30);
                 ArrayList<String[]> messages = (ArrayList<String[]>) request.getAttribute("messages");
                 for (String[] message : messages) {
                     out.println("<p><b>" + message[0]

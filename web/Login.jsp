@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" contentType="text/html;charset=UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<html>
 <head>
     <title>Login</title>
 </head>
@@ -15,7 +16,7 @@
                     <h3>Enter your name</h3>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="name" placeholder=" name" autofocus="autofocus"/>
+                    <input type="text" class="form-control" placeholder="name" name="name"/>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block" style="background: blue; color: white">Enter</button>
