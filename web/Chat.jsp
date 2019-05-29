@@ -27,7 +27,7 @@
 <div class="container">
     <div class="row">
         <div>
-            <h1>Welcome <%=request.getParameter("name")%></h1>
+            <h1>Welcome <%=request.getSession().getAttribute("name")%></h1>
             <form action="chat" method="post">
                 <div class="form-group">
                     <h3>Type your message below. No empty messages allowed!</h3>
@@ -44,7 +44,7 @@
             <%
                 ArrayList<String> messages = (ArrayList<String>) request.getAttribute("messages");
                 for (String message : messages) {
-                    out.println("<p><b>" + request.getParameter("name")
+                    out.println("<p><b>" +request.getParameter("name")
                             + ":   </b>" + message + "</p>");
                 }
             %>
