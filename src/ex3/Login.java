@@ -1,4 +1,5 @@
 package ex3;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,42 +9,51 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ *
+ */
 @WebServlet(name = "Login", urlPatterns = "/login")
 public class Login extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //HttpSession session = request.getSession(false);
 
-        if(request.getSession(false) != null && request.getSession(false).getAttribute("name") != null)
-        {
-            request.getRequestDispatcher("Chat").forward(request,response);
-
-        }
-        else {
-
+    /**
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(false);
+        //check if the user is login, take him to the chat page
+        if (session != null && session.getAttribute("name") != null)
+            response.sendRedirect("chat");
+        else {//a new user
             response.setContentType("text/html");
             String name = request.getParameter("name");
-
-            if (!name.trim().equals("")) {
-                request.getSession().setAttribute("name", name);
-                request.getRequestDispatcher("Chat.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("Login.html").forward(request, response);
+            if (!name.trim().equals("")) {//not an empty name
+                request.getSession().setAttribute("name",name);
+                response.sendRedirect("chat");
+            } else
+            {
+                request.setAttribute("error", "true");
+                request.getRequestDispatcher("Login.jsp").forward(request,response);
             }
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//        HttpSession session = request.getSession(false);
-//
-//        if (session != null && session.getAttribute("name") != null) {
-//            String name = (String) session.getAttribute("name");
-//            response.getWriter().print("Hello, " + name + " Welcome to your Profile");
-//            request.getRequestDispatcher("chat").forward(request,response);
-//        } else {
-        response.setContentType("text/html");
+    /**handel the jsp page
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
 
-        request.getRequestDispatcher("Login.html").forward(request,response);
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("name") != null)
+            response.sendRedirect("chat");
+        else {
+                request.setAttribute("error", "false");
+                request.getRequestDispatcher("Login.jsp").forward(request,response);
+        }
     }
 }

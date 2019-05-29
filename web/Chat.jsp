@@ -1,12 +1,10 @@
-<%@ page import="java.util.ArrayList" %><%--
-  Created by IntelliJ IDEA.
-  User: zkbnd
-  Date: 26-May-19
-  Time: 11:50 PM
-  To change this template use File | Settings | File Templates.
---%>
+/**
+*
+*/
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <head>
     <title>Chat</title>
@@ -18,7 +16,7 @@
             <h1 style="margin: 0">Welcome to the chatroom</h1>
         </div>
         <div class="col-sm-4">
-            <a href="login">
+            <a href="logout">
                 <button type="button" class="btn btn-primary pull-right">Logout</button>
             </a>
         </div>
@@ -27,13 +25,16 @@
 <div class="container">
     <div class="row">
         <div>
-            <h1>Welcome <%=request.getSession().getAttribute("name")%></h1>
-            <form action="chat" method="post">
+            <h1>Welcome <%=request.getParameter("name")%></h1>
+            <form action="chat" method="post" onsubmit=post()>
                 <div class="form-group">
                     <h3>Type your message below. No empty messages allowed!</h3>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="message"/>
+                    <input type="text" class="form-control" id="message" name="message" autofocus="autofocus"/>
+                    <% if(request.getAttribute("error").equals("true")) { %>
+                    <div class="alert alert-danger" role="alert">No message!</div>
+                    <% } %>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" style="background: blue; color: white">Send</button>
@@ -42,14 +43,30 @@
         </div>
         <div>
             <%
-                ArrayList<String> messages = (ArrayList<String>) request.getAttribute("messages");
-                for (String message : messages) {
-                    out.println("<p><b>" +request.getParameter("name")
-                            + ":   </b>" + message + "</p>");
+                response.setIntHeader("Refresh", 30);
+                ArrayList<String[]> messages = (ArrayList<String[]>) request.getAttribute("messages");
+                for (String[] message : messages) {
+                    out.println("<p><b>" + message[0]
+                            + ":   </b>" + message[1] + "</p>");
                 }
             %>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        document.getElementById("message").value = localStorage.getItem("message");
+    });
+    $(window).on('beforeunload', function() {
+        localStorage.setItem("message",document.getElementById("message").value);
+    });
+    if (window.history.replaceState)
+        window.history.replaceState(null, null, window.location.href);
+    function post() {
+        $(window).on('beforeunload', function() {
+            localStorage.setItem("message", "");
+        });
+    }
+</script>
 </body>
 </html>
