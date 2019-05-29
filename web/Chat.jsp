@@ -17,7 +17,7 @@
         </div>
         <div class="col-sm-4">
             <a href="logout">
-                <button type="button" class="btn btn-primary pull-right">Logout</button>
+                <button type="button" class="btn btn-primary pull-right" onclick="clearMessageBox()">Logout</button>
             </a>
         </div>
     </div>
@@ -26,7 +26,7 @@
     <div class="row">
         <div>
             <h1>Welcome <%=request.getParameter("name")%></h1>
-            <form action="chat" method="post" onsubmit=post()>
+            <form action="chat" method="post" onsubmit=clearMessageBox()>
                 <div class="form-group">
                     <h3>Type your message below. No empty messages allowed!</h3>
                 </div>
@@ -62,7 +62,7 @@
     });
     if (window.history.replaceState)
         window.history.replaceState(null, null, window.location.href);
-    function post() {
+    function clearMessageBox() {
         $(window).on('beforeunload', function() {
             localStorage.setItem("message", "");
         });
